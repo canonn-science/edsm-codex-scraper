@@ -13,7 +13,7 @@ import json
 import os
 import copy
 
-results_file = "edsm-codex-scraper.json"
+results_file = "edsm-codex.json"
 
 def download(filename, source_url, age_hours = None):
     """
@@ -30,7 +30,7 @@ def download(filename, source_url, age_hours = None):
         if os.path.exists(filename) and os.path.getsize(filename):
             mtime = os.path.getmtime(filename)
 
-    if not mtime or mtime < old.timestamp() or etag_differs(source_url):
+    if not mtime or mtime < old.timestamp():
         r = requests.get(source_url, stream = True)
         with open(filename, "wb") as file:
             for chunk in r.iter_content(chunk_size=200000):
@@ -201,6 +201,7 @@ with open(sample_search_page, "rt") as test_file:
                 parser.feed(r.text)
                 page_size = len(parser.get_systems())
                 res = res + parser.get_systems()
+                res = [ x for x in set(res) ]
                 print("{} systems".format(len(res)))
                 time.sleep(60)
 
