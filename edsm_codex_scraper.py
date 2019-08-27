@@ -40,7 +40,7 @@ def download(filename, source_url, age_hours = None):
     return False
 
 def url_gen(item, page):
-    res = "https://www.edsm.net/en/search/systems/index/cmdrPosition/Sagittarius+A%2A/codexEntry/{}/onlyPopulated/0/radius/60000/sortBy/name".format(item)
+    res = "https://www.edsm.net/en/search/systems/index/cmdrPosition/Sagittarius+A%2A/codexEntry/{}/onlyPopulated/0/radius/60000/sortBy/distanceSol".format(item)
     if page > 1:
         res = res + "/p/{}".format(page)
     return res
@@ -194,7 +194,8 @@ with open(sample_search_page, "rt") as test_file:
             res = []
             page_size = 100
             while page_size == 100:
-                print("Page {}".format(page))
+                print("Page {} of item_code {}".format(page,item_code))
+                print(url_gen(item_code, page))
                 r = requests.get(url_gen(item_code, page))
                 page = page + 1
                 parser = EdsmCodexHtmlParser()
